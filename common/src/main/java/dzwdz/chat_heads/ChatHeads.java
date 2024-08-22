@@ -1,9 +1,12 @@
 package dzwdz.chat_heads;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.blaze3d.vertex.PoseStack;
 import dzwdz.chat_heads.config.ChatHeadsConfig;
 import dzwdz.chat_heads.config.ChatHeadsConfigDefaults;
 import dzwdz.chat_heads.mixininterface.Ownable;
+import dzwdz.chat_heads.renderer.FiguraPortraitRenderer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.GuiMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,6 +16,9 @@ import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.figuramc.figura.avatar.Avatar;
+import org.figuramc.figura.avatar.AvatarManager;
+import org.figuramc.figura.config.Configs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -365,8 +371,14 @@ public class ChatHeads {
 
     public static void renderChatHead(GuiGraphics guiGraphics, int x, int y, PlayerInfo owner) {
         ResourceLocation skinLocation = owner.getSkin().texture();
+        Avatar avatar = null;
+        if (FabricLoader.getInstance().isModLoaded("figura")) {
+            avatar = AvatarManager.getAvatarForPlayer(owner.getProfile().getId());
+        }
 
-        if (blendedHeadTextures.contains(skinLocation)) {
+        if (Configs.AVATAR_PORTRAIT.value && avatar != null && FiguraPortraitRenderer.renderPortrait(avatar, guiGraphics, x, y, 8, 14, false)) {
+            return;
+        } else if (blendedHeadTextures.contains(skinLocation)) {
             // draw head in one draw call, fixing transparency issues of the "vanilla" path below
             guiGraphics.blit(getBlendedHeadLocation(skinLocation), x, y, 8, 8, 0, 0, 8, 8, 8, 8);
         } else {

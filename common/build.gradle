@@ -13,4 +13,10 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
 
     modApi "me.shedaniel.cloth:cloth-config:${project.cloth_config_version}"
+
+    compileOnly("com.github.FiguraMC.luaj:luaj-core:$luaj-figura")
+    compileOnly("com.github.FiguraMC.luaj:luaj-jse:$luaj-figura")
+    compileOnly("com.neovisionaries:nv-websocket-client:$nv_websocket")
+
+    modCompileOnly("org.figuramc:figura-common-intermediary:$figura_version")
 }

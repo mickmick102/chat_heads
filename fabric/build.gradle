@@ -33,6 +33,11 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
+    compileOnly("com.github.FiguraMC.luaj:luaj-core:$luaj-figura")
+    compileOnly("com.github.FiguraMC.luaj:luaj-jse:$luaj-figura")
+    compileOnly("com.neovisionaries:nv-websocket-client:$nv_websocket")
+    modImplementation("org.figuramc:figura-fabric:$figura_version")
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }
