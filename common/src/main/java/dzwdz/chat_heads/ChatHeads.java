@@ -163,15 +163,13 @@ public class ChatHeads {
         Component sender = getSenderDecoration(bound);
 
         PlayerInfoCache playerInfoCache = new PlayerInfoCache(connection);
-        playerInfoCache.collectProfileNames();
+        playerInfoCache.collectAllNames();
 
         // StyledNicknames compatibility: try to get player info from /tell click event
         PlayerInfo player = getTellReceiver(sender != null ? sender : message).map(playerInfoCache::get).orElse(null);
         if (player != null) {
             return player;
         }
-
-        playerInfoCache.collectAllNames();
 
         // try to get player info only from the sender decoration
         if (sender != null) {
@@ -192,6 +190,7 @@ public class ChatHeads {
                     String name = cmd.substring("/tell ".length()).trim();
                     return Optional.of(name);
                 }
+                return Optional.of(cmd.trim());
             }
 
             return Optional.empty();
