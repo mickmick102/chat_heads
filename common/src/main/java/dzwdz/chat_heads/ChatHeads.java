@@ -165,7 +165,7 @@ public class ChatHeads {
         PlayerInfoCache playerInfoCache = new PlayerInfoCache(connection);
         playerInfoCache.collectAllNames();
 
-        // StyledNicknames compatibility: try to get player info from /tell click event
+        // StyledNicknames compatibility: try to get player info from /tell click event. All names should be found this way.
         PlayerInfo player = getTellReceiver(sender != null ? sender : message).map(playerInfoCache::get).orElse(null);
         if (player != null) {
             return player;
@@ -175,7 +175,9 @@ public class ChatHeads {
         if (sender != null) {
             return playerInfoCache.get(sender.getString());
         } else {
-            return scanForPlayerName(message.getString(), playerInfoCache);
+             // Not use by Vinderland because of many bugs in chat.
+            //return scanForPlayerName(message.getString(), playerInfoCache);
+            return null;
         }
     }
 
@@ -210,7 +212,8 @@ public class ChatHeads {
         return null;
     }
 
-    @Nullable
+    // Not used by Vinderland because of Chat message issue.
+    /*@Nullable
     private static PlayerInfo scanForPlayerName(@NotNull String message, PlayerInfoCache playerInfoCache) {
         message = message.replaceAll(FORMAT_REGEX, "");
 
@@ -251,7 +254,7 @@ public class ChatHeads {
         }
 
         return null;
-    }
+    }*/
 
     static class PlayerInfoCache {
         private final ClientPacketListener connection;
